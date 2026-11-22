@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/inter';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Tokens de la paleta provisional del brandbook v1.0.
+ * Cambiar la marca = cambiar estos valores.
+ */
+:root {
+  color-scheme: light;
+  --petroleo: #142c36;
+  --menta: #a8dcc5;
+  --menta-suave: #ddf0e6;
+  --blanco-calido: #f2f0e8;
+  --verde-profundo: #285b4a;
+  --amarillo-suave: #e5b96b;
+  --amarillo-fondo: #f6e7c8;
+  --amarillo-texto: #5c4310;
+
+  --page: var(--blanco-calido);
+  --surface: #ffffff;
+  --line: #e2ded2;
+  --line-strong: #c9c4b5;
+  --ink: var(--petroleo);
+  --ink-2: #3f535b;
+  --ink-3: #4e6068;
+  --action: var(--verde-profundo);
+  --action-ink: #ffffff;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --page: #0e1f26;
+  --surface: #142c36;
+  --line: #24414d;
+  --line-strong: #33525e;
+  --ink: #f2f0e8;
+  --ink-2: #c9d6d1;
+  --ink-3: #a9bbb5;
+  --action: var(--menta);
+  --action-ink: var(--petroleo);
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Manrope Variable', 'Inter Variable', system-ui, sans-serif;
+
+  --color-petroleo: var(--petroleo);
+  --color-menta: var(--menta);
+  --color-menta-suave: var(--menta-suave);
+  --color-blanco-calido: var(--blanco-calido);
+  --color-verde-profundo: var(--verde-profundo);
+  --color-amarillo-suave: var(--amarillo-suave);
+  --color-amarillo-fondo: var(--amarillo-fondo);
+  --color-amarillo-texto: var(--amarillo-texto);
+
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-action: var(--action);
+  --color-action-ink: var(--action-ink);
+}
+
+html {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
