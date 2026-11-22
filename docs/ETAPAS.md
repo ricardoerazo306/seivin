@@ -3,7 +3,7 @@
 | Etapa | Estado | Fecha |
 | --- | --- | --- |
 | 0. Prototipo navegable | Completa | 22 nov 2026 |
-| 1. Configuración | En verificación | 22 nov 2026 |
+| 1. Configuración | Completa | 22 nov 2026 |
 | 2. Base de datos y seguridad | Pendiente | |
 | 3. Cuentas | Pendiente | |
 | 4. Balance mensual y categorías | Pendiente | |
@@ -33,6 +33,13 @@
 - 7 pruebas de validación de variables (incluye bloqueo de claves secretas).
 - 4 pruebas de rutas (bienvenida, áreas, estado sin variables, 404).
 - Revisión visual en computador y celular.
+
+**Verificación final**
+
+- La versión publicada conecta con Supabase (página `/estado`: variables y conexión correctas).
+- Las direcciones internas se pueden abrir y recargar directamente.
+- Encabezados de seguridad activos (CSP, X-Frame-Options: DENY).
+- Los tres servicios están en plan gratuito: Supabase Free, Cloudflare Workers Free sin medio de pago, GitHub Free.
 
 **Servicios conectados (planes gratuitos)**
 
