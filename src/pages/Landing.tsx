@@ -24,25 +24,14 @@ export function Landing() {
         <div className="mx-auto flex w-full max-w-md flex-col gap-6">
           <p className="text-base leading-relaxed text-ink-2 lg:text-lg">{BRAND.welcome}</p>
           <div className="flex flex-col gap-3">
-            <button
-              type="button"
-              disabled
-              className="h-13 rounded-2xl bg-verde-profundo text-base font-semibold text-white disabled:opacity-60"
-              aria-describedby="pronto"
-            >
-              Crear cuenta
-            </button>
-            <p id="pronto" className="text-center text-sm text-ink-3">
-              Las cuentas se habilitan en la etapa 3 del desarrollo.
-            </p>
+            <Link to="/registro" className="flex h-13 items-center justify-center rounded-2xl bg-verde-profundo text-base font-semibold text-white">
+              Crear cuenta gratis
+            </Link>
             <Link
-              to="/app"
+              to="/entrar"
               className="flex h-12 items-center justify-center rounded-2xl border border-line-strong bg-surface text-base font-semibold text-ink"
             >
-              Ver la estructura de la app
-            </Link>
-            <Link to="/estado" className="flex h-11 items-center justify-center text-[15px] font-semibold text-verde-profundo underline-offset-4 hover:underline">
-              Estado de la conexión
+              Ya tengo cuenta
             </Link>
           </div>
           <p className="text-center text-xs leading-relaxed text-ink-3">{BRAND.disclaimer}</p>

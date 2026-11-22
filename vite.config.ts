@@ -4,6 +4,8 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // El paquete principal incluye supabase-js (sesión en todas las páginas): ~177 KB comprimido.
+  build: { chunkSizeWarningLimit: 700 },
   test: {
     environment: 'jsdom',
     globals: true,

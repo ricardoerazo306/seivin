@@ -5,7 +5,7 @@
 | 0. Prototipo navegable | Completa | 22 nov 2026 |
 | 1. Configuración | Completa | 22 nov 2026 |
 | 2. Base de datos y seguridad | Completa | 22 nov 2026 |
-| 3. Cuentas | Pendiente | |
+| 3. Cuentas | Código completo · falta configurar Auth en Supabase | 22 nov 2026 |
 | 4. Balance mensual y categorías | Pendiente | |
 | 5. Inicio y primer ingreso | Pendiente | |
 | 6. Metas de ahorro | Pendiente | |
@@ -66,3 +66,20 @@
 - `supabase/tests/aislamiento_rls.sql`: 16 de 16 correctas, sin dejar datos.
 - Asesores de Supabase: el único aviso de seguridad es `delete_my_account` ejecutable con sesión, que es
   intencional (solo borra la cuenta de quien la llama). Índices sugeridos agregados.
+
+## Etapa 3 · Cuentas
+
+**Qué se desarrolló**
+
+- Registro con nombre, correo y contraseña (8+ caracteres con letras y números), con aviso de "revisa tu correo".
+- Inicio y cierre de sesión, recuperación de contraseña por correo y página para crear la nueva.
+- Rutas privadas: `/app/*` exige sesión y devuelve a la página que pedías después de entrar.
+- Cuenta: nombre, modo de experiencia (inicial, intermedio, avanzado), apariencia (claro, oscuro, automático),
+  descarga de todos los datos en JSON, cierre de sesión y eliminación de la cuenta con confirmación.
+- Mensajes de error claros y sin culpa para los códigos de Supabase Auth.
+- Botón de Google listo pero apagado (`src/config/features.ts`) hasta crear las credenciales.
+
+**Pruebas**: validaciones y mensajes (4), rutas protegidas y validación del registro (5).
+
+**Pendiente**: en Supabase → Authentication → URL Configuration, poner `https://seivin.pages.dev` como Site URL
+y agregar `https://seivin.pages.dev/**` a las Redirect URLs; decidir la confirmación por correo (ver plan).

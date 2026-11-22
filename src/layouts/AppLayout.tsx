@@ -3,12 +3,14 @@ import { Plus } from 'lucide-react'
 import { AREAS } from '../app/navigation'
 import { Logo } from '../components/Logo'
 import { BRAND } from '../config/brand'
+import { useThemeFromProfile } from '../lib/profile'
 
 /**
  * Estructura de la app privada: menú lateral en computador y barra inferior en celular.
  * La protección por sesión llega en la etapa 3.
  */
 export function AppLayout() {
+  useThemeFromProfile()
   const mobile = AREAS.filter((a) => ['inicio', 'organiza', 'construye'].includes(a.id))
   return (
     <div className="flex min-h-dvh flex-wrap bg-page">
