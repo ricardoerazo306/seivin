@@ -48,7 +48,7 @@ La app **rechaza** claves secretas (`sb_secret_...` o `service_role`) para que n
 - Comando de compilación: `npm run build`
 - Carpeta de salida: `dist`
 - Variables: las dos de arriba
-- `public/_redirects` permite recargar cualquier página de la app.
+- Sin `404.html`, Cloudflare Pages trata la app como de una sola página: cualquier dirección (por ejemplo `/app/organiza`) carga la app y se puede recargar.
 - `public/_headers` añade encabezados de seguridad (CSP, sin incrustación en otros sitios, sin cámara ni micrófono).
 
 ## Estructura
