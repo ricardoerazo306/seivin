@@ -27,6 +27,8 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# Valores públicos de producción (sin secretos)
+!.env.production
 
 # Supabase local
 supabase/.branches
