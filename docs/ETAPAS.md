@@ -3,7 +3,7 @@
 | Etapa | Estado | Fecha |
 | --- | --- | --- |
 | 0. Prototipo navegable | Completa | 22 nov 2026 |
-| 1. Configuración | En curso: falta conectar Supabase y publicar | 22 nov 2026 |
+| 1. Configuración | En verificación | 22 nov 2026 |
 | 2. Base de datos y seguridad | Pendiente | |
 | 3. Cuentas | Pendiente | |
 | 4. Balance mensual y categorías | Pendiente | |
@@ -34,8 +34,8 @@
 - 4 pruebas de rutas (bienvenida, áreas, estado sin variables, 404).
 - Revisión visual en computador y celular.
 
-**Pendiente para cerrar la etapa**
+**Servicios conectados (planes gratuitos)**
 
-- Crear el proyecto en Supabase y poner sus dos valores en `.env.local` y en Cloudflare.
-- Subir el código a GitHub y conectar Cloudflare Pages.
-- Confirmar en `/estado` de la versión publicada que la conexión responde.
+- Supabase: proyecto `seivin` (región us-east-1), valores públicos en `.env.production`.
+- GitHub: repositorio `ricardoerazo306/seivin`.
+- Cloudflare Pages: proyecto `seivin`, publicado en https://seivin.pages.dev (compila con `npm run build`, salida `dist`).
