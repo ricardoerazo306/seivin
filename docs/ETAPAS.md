@@ -146,3 +146,13 @@ y agregar `https://seivin.pages.dev/**` a las Redirect URLs; decidir la confirma
 
 **Pruebas (etapas 5–10)**: 35 pruebas automáticas + 2 del modo exploración; recorrido completo en navegador
 (computador claro, celular claro y oscuro) sin errores de consola ni peticiones a Supabase en modo exploración.
+
+## Configuración de servicios (22 nov 2026)
+
+- **Supabase Auth**: Site URL `https://seivin.pages.dev`; redirect URLs `https://seivin.pages.dev/**` y `http://localhost:5173/**`.
+- **Google (inicio de sesión)**: proyecto `seivin` en Google Cloud (sin facturación), pantalla de consentimiento
+  "Seivin" con página principal, privacidad y términos, público externo **en producción**; cliente web con origen
+  `https://seivin.pages.dev` y callback `https://zhyyaglmjvyxdfoagwfp.supabase.co/auth/v1/callback`; proveedor Google
+  activado en Supabase. Solo usa permisos básicos (correo y nombre), que no requieren verificación.
+- **Correo**: SMTP de Gmail (`smtp.gmail.com:465`, remitente "Seivin") con contraseña de aplicación. Gratis, hasta
+  unos 500 correos al día. La contraseña la pega el dueño de la cuenta.

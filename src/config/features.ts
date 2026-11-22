@@ -4,5 +4,5 @@
  */
 export const FEATURES = {
   /** Requiere crear credenciales OAuth en Google Cloud y activarlas en Supabase. */
-  googleSignIn: false,
+  googleSignIn: true,
 } as const
