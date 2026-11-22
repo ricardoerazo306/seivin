@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import { AppLayout } from '../layouts/AppLayout'
 import { RequireAuth } from './RequireAuth'
-import { Cuenta } from '../pages/Cuenta'
 import { Entrar } from '../pages/auth/Entrar'
 import { NuevaContrasena } from '../pages/auth/NuevaContrasena'
 import { Recuperar } from '../pages/auth/Recuperar'
@@ -23,11 +22,16 @@ export const routes = [
     ),
     children: [
       { index: true, element: <AreaPage areaId="inicio" /> },
-      { path: 'organiza', element: <AreaPage areaId="organiza" /> },
+      { path: 'organiza', lazy: () => import('../features/balance/OrganizaPage').then((m) => ({ Component: m.OrganizaPage })) },
+      {
+        path: 'organiza/categorias',
+        lazy: () => import('../features/balance/CategoriasPage').then((m) => ({ Component: m.CategoriasPage })),
+      },
+      { path: 'organiza/:mes', lazy: () => import('../features/balance/BalancePage').then((m) => ({ Component: m.BalancePage })) },
       { path: 'construye', element: <AreaPage areaId="construye" /> },
       { path: 'entiende', element: <AreaPage areaId="entiende" /> },
       { path: 'aprende', element: <AreaPage areaId="aprende" /> },
-      { path: 'cuenta', element: <Cuenta /> },
+      { path: 'cuenta', lazy: () => import('../pages/Cuenta').then((m) => ({ Component: m.Cuenta })) },
       { path: 'mas', element: <MorePage /> },
     ],
   },

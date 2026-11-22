@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { AREAS } from '../app/navigation'
 
 /** Marcador de cada área mientras se construye. Dice en qué etapa llega. */
@@ -26,10 +27,10 @@ export function MorePage() {
       <ul className="flex flex-col gap-2">
         {rest.map((a) => (
           <li key={a.id}>
-            <a href={a.path} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 font-semibold">
+            <Link to={a.path} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 font-semibold">
               <a.icon size={20} aria-hidden="true" className="text-verde-profundo" />
               {a.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

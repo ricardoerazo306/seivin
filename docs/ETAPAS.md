@@ -6,7 +6,7 @@
 | 1. Configuración | Completa | 22 nov 2026 |
 | 2. Base de datos y seguridad | Completa | 22 nov 2026 |
 | 3. Cuentas | Código completo · falta configurar Auth en Supabase | 22 nov 2026 |
-| 4. Balance mensual y categorías | Pendiente | |
+| 4. Balance mensual y categorías | Completa | 22 nov 2026 |
 | 5. Inicio y primer ingreso | Pendiente | |
 | 6. Metas de ahorro | Pendiente | |
 | 7. Fondo de emergencia | Pendiente | |
@@ -83,3 +83,29 @@
 
 **Pendiente**: en Supabase → Authentication → URL Configuration, poner `https://seivin.pages.dev` como Site URL
 y agregar `https://seivin.pages.dev/**` a las Redirect URLs; decidir la confirmación por correo (ver plan).
+
+## Etapa 4 · Balance mensual y categorías
+
+**Qué se desarrolló**
+
+- Organiza: tarjeta del mes actual (empezar, seguir o ver), historial de balances con lo que quedó y la diferencia
+  frente al mes anterior, y opción de registrar un mes anterior para tener con qué comparar.
+- Balance del mes: se abre copiando las líneas del balance anterior (o los movimientos fijos si es el primero),
+  así la persona solo ajusta lo que cambió. Cada línea muestra cuánto fue el mes anterior o si es nueva.
+- Edición en línea con guardado al salir del campo, actualización optimista y campo de pesos con separador de miles.
+- Resumen: entró, salió, te quedó (y diferencia con el mes anterior) y peso de los gastos esenciales.
+- Cerrar el balance: mensaje sin culpa y lista de "qué cambió" por categoría, ordenada por su efecto en lo que quedó.
+  Se puede reabrir o borrar.
+- Categorías: crear, renombrar, marcar como esencial, archivar, restaurar y borrar (si no tiene movimientos).
+- Tipo de gasto (fijo, variable, ocasional) visible en los modos intermedio y avanzado.
+- Base de datos: función `start_balance(period)` con `SECURITY INVOKER` (respeta RLS), idempotente y atómica.
+- Seguridad: al cerrar sesión se borra la caché local de datos.
+
+**Pruebas**
+
+- Lógica (8): períodos, totales, comparación (la suma de cambios cuadra con la diferencia), copia, mensajes y formato de pesos.
+- SQL `supabase/tests/iniciar_balance.sql` (8/8): desde fijos, copia sin archivadas, idempotencia, validaciones,
+  aislamiento entre cuentas y bloqueo sin sesión.
+- Recorrido completo en navegador (celular y computador) con Supabase simulado (`qa/`): sin errores de consola.
+
+**Pendiente para después**: pantalla para administrar movimientos fijos (la base ya los soporta).

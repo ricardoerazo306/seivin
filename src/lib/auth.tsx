@@ -1,4 +1,5 @@
 import type { Session } from '@supabase/supabase-js'
+import { useQueryClient } from '@tanstack/react-query'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { supabase } from './supabase'
 
@@ -16,6 +17,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase ? { status: 'loading', session: null } : { status: 'unconfigured', session: null },
   )
 
+  const qc = useQueryClient()
+
   useEffect(() => {
     if (!supabase) return
     let active = true
@@ -29,6 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       const recovery = event === 'PASSWORD_RECOVERY'
+      // Al salir se borra la caché: nada de una cuenta queda visible para la siguiente.
+      if (event === 'SIGNED_OUT') qc.clear()
       setState(
         session
           ? { status: 'signed-in', session, recovery }
@@ -39,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       active = false
       sub.subscription.unsubscribe()
     }
-  }, [])
+  }, [qc])
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>
 }

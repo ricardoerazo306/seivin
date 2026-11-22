@@ -1,0 +1,11 @@
+# Revisión visual con Supabase simulado
+
+Recorre el balance mensual en un navegador real sin crear cuentas: `supabase_simulado.py`
+responde a la API de Supabase con datos de ejemplo (los de Ana del prototipo) y guarda todo en memoria.
+
+```bash
+npm run build && npx vite preview --port 4174 &
+pip install playwright pillow && python3 qa/flujo_balance.py 390 movil   # o 1280 escritorio
+```
+
+Las capturas quedan en `qa/capturas/` (ignorada por git).

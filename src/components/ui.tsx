@@ -1,4 +1,4 @@
-import { useId, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from 'react'
+import { useId, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
 import { AlertCircle, CheckCircle2, Info, Loader2 } from 'lucide-react'
 
 export function Field({
@@ -77,5 +77,89 @@ export function Notice({ tone = 'info', children }: { tone?: 'info' | 'good' | '
 }
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-3xl border border-line bg-surface p-5 sm:p-6 ${className}`}>{children}</section>
+  // Los colores por defecto solo se aplican si quien llama no trae los suyos (evita clases que chocan).
+  const bg = /(^|\s)bg-/.test(className) ? '' : 'bg-surface'
+  const border = /(^|\s)border-(?!\d)/.test(className) ? '' : 'border-line'
+  return <section className={`rounded-3xl border p-5 sm:p-6 ${border} ${bg} ${className}`}>{children}</section>
+}
+
+export function Select({
+  label,
+  hideLabel,
+  children,
+  className = '',
+  ...rest
+}: { label: string; hideLabel?: boolean } & SelectHTMLAttributes<HTMLSelectElement>) {
+  const id = useId()
+  return (
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      <label htmlFor={id} className={hideLabel ? 'sr-only' : 'text-sm font-semibold text-ink'}>
+        {label}
+      </label>
+      <select
+        id={id}
+        className="h-12 min-w-0 rounded-xl border border-line-strong bg-surface px-3 text-base text-ink outline-none focus:border-verde-profundo focus:ring-2 focus:ring-verde-profundo/20 disabled:opacity-60"
+        {...rest}
+      >
+        {children}
+      </select>
+    </div>
+  )
+}
+
+/** Campo de pesos: muestra separadores de miles mientras se escribe y entrega un número. */
+export function MoneyInput({
+  label,
+  hideLabel,
+  value,
+  onValue,
+  error,
+  className = '',
+  ...rest
+}: {
+  label: string
+  hideLabel?: boolean
+  value: number
+  onValue: (n: number) => void
+  error?: string | null
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>) {
+  const id = useId()
+  const text = value ? new Intl.NumberFormat('es-CO').format(value) : ''
+  return (
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      <label htmlFor={id} className={hideLabel ? 'sr-only' : 'text-sm font-semibold text-ink'}>
+        {label}
+      </label>
+      <div className="relative">
+        <span aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-ink-3">
+          $
+        </span>
+        <input
+          id={id}
+          inputMode="numeric"
+          autoComplete="off"
+          aria-invalid={!!error}
+          value={text}
+          onChange={(e) => {
+            const digits = e.target.value.replace(/\D/g, '').slice(0, 13)
+            onValue(digits ? Number(digits) : 0)
+          }}
+          className={`h-12 w-full rounded-xl border bg-surface pr-3 pl-7 text-right text-base text-ink tabular-nums outline-none focus:border-verde-profundo focus:ring-2 focus:ring-verde-profundo/20 disabled:opacity-60 ${
+            error ? 'border-amarillo-suave' : 'border-line-strong'
+          }`}
+          {...rest}
+        />
+      </div>
+      {error && (
+        <p role="alert" className="text-sm font-medium text-amarillo-texto">
+          {error}
+        </p>
+      )}
+    </div>
+  )
+}
+
+export function Chip({ tone = 'neutral', children }: { tone?: 'neutral' | 'good' | 'warn'; children: ReactNode }) {
+  const cls = { neutral: 'bg-page text-ink-2 border border-line', good: 'bg-menta-suave text-[#1e3d33]', warn: 'bg-amarillo-fondo text-amarillo-texto' }[tone]
+  return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${cls}`}>{children}</span>
 }

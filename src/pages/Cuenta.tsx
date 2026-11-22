@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { Download, LogOut, Trash2 } from 'lucide-react'
 import { Button, Card, Field, Notice } from '../components/ui'
@@ -32,9 +32,12 @@ export function Cuenta() {
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (profile.data) setName(profile.data.display_name ?? '')
-  }, [profile.data])
+  const loadedName = profile.data?.display_name ?? null
+  const [syncedName, setSyncedName] = useState<string | null>(null)
+  if (loadedName !== null && loadedName !== syncedName) {
+    setSyncedName(loadedName)
+    setName(loadedName)
+  }
 
   if (auth.status !== 'signed-in') return null
   const email = auth.session.user.email
