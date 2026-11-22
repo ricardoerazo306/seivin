@@ -1,5 +1,6 @@
 import { useId, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
 import { AlertCircle, CheckCircle2, Info, Loader2 } from 'lucide-react'
+import { NavLink } from 'react-router'
 
 export function Field({
   label,
@@ -46,7 +47,7 @@ export function Button({
   const styles = {
     primary: 'bg-verde-profundo text-white hover:brightness-110',
     secondary: 'border border-line-strong bg-surface text-ink hover:bg-page',
-    ghost: 'text-verde-profundo hover:bg-menta-suave',
+    ghost: 'text-action hover:bg-menta-suave',
     danger: 'bg-[#8a2f2f] text-white hover:brightness-110',
   }[variant]
   return (
@@ -64,8 +65,8 @@ export function Button({
 
 export function Notice({ tone = 'info', children }: { tone?: 'info' | 'good' | 'warn'; children: ReactNode }) {
   const map = {
-    info: { cls: 'bg-menta-suave text-[#1e3d33]', Icon: Info },
-    good: { cls: 'bg-menta-suave text-[#1e3d33]', Icon: CheckCircle2 },
+    info: { cls: 'bg-menta-suave text-menta-ink', Icon: Info },
+    good: { cls: 'bg-menta-suave text-menta-ink', Icon: CheckCircle2 },
     warn: { cls: 'bg-amarillo-fondo text-amarillo-texto', Icon: AlertCircle },
   }[tone]
   return (
@@ -160,6 +161,53 @@ export function MoneyInput({
 }
 
 export function Chip({ tone = 'neutral', children }: { tone?: 'neutral' | 'good' | 'warn'; children: ReactNode }) {
-  const cls = { neutral: 'bg-page text-ink-2 border border-line', good: 'bg-menta-suave text-[#1e3d33]', warn: 'bg-amarillo-fondo text-amarillo-texto' }[tone]
+  const cls = { neutral: 'bg-page text-ink-2 border border-line', good: 'bg-menta-suave text-menta-ink', warn: 'bg-amarillo-fondo text-amarillo-texto' }[tone]
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${cls}`}>{children}</span>
+}
+
+export function Progress({ value, label, tone = 'good' }: { value: number; label: string; tone?: 'good' | 'warn' }) {
+  const pct = Math.round(Math.min(1, Math.max(0, value)) * 100)
+  return (
+    <div
+      role="progressbar"
+      aria-label={label}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={pct}
+      className="h-2.5 w-full overflow-hidden rounded-full bg-line"
+    >
+      <div className={`h-full rounded-full ${tone === 'warn' ? 'bg-amarillo-suave' : 'bg-[var(--dv-1)]'}`} style={{ width: `${pct}%` }} />
+    </div>
+  )
+}
+
+export function PageHeader({ title, text, children }: { title: string; text?: string; children?: ReactNode }) {
+  return (
+    <header className="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 className="font-display text-3xl font-extrabold">{title}</h1>
+        {text && <p className="mt-1 max-w-prose text-ink-2">{text}</p>}
+      </div>
+      {children}
+    </header>
+  )
+}
+
+export function Tabs({ items }: { items: { to: string; label: string; end?: boolean }[] }) {
+  return (
+    <nav aria-label="Secciones" className="-mx-1 flex gap-1 overflow-x-auto">
+      {items.map((i) => (
+        <NavLink
+          key={i.to}
+          to={i.to}
+          end={i.end}
+          className={({ isActive }) =>
+            `shrink-0 rounded-full px-4 py-2 text-sm font-semibold ${isActive ? 'bg-petroleo text-blanco-calido' : 'text-ink-2 hover:bg-surface'}`
+          }
+        >
+          {i.label}
+        </NavLink>
+      ))}
+    </nav>
+  )
 }

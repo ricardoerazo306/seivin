@@ -49,7 +49,7 @@ export function Estado() {
 
 function Check({ ok, title, detail }: { ok: boolean | null; title: string; detail: string }) {
   const Icon = ok === null ? Loader2 : ok ? CheckCircle2 : CircleAlert
-  const tone = ok === null ? 'text-ink-3' : ok ? 'text-verde-profundo' : 'text-amarillo-texto'
+  const tone = ok === null ? 'text-ink-3' : ok ? 'text-action' : 'text-amarillo-texto'
   const bg = ok === false ? 'bg-amarillo-fondo border-amarillo-suave' : 'bg-surface border-line'
   return (
     <li className={`flex gap-3 rounded-2xl border p-4 ${bg}`}>

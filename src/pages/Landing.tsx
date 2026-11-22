@@ -33,8 +33,14 @@ export function Landing() {
             >
               Ya tengo cuenta
             </Link>
+            <Link to="/explorar" className="flex h-11 items-center justify-center text-base font-semibold text-action">
+              Explorar sin cuenta, con datos de ejemplo
+            </Link>
           </div>
-          <p className="text-center text-xs leading-relaxed text-ink-3">{BRAND.disclaimer}</p>
+          <p className="text-center text-xs leading-relaxed text-ink-3">
+            {BRAND.disclaimer}{' '}
+            <Link to="/privacidad" className="underline">Privacidad</Link> · <Link to="/terminos" className="underline">Términos</Link>
+          </p>
         </div>
       </section>
     </div>

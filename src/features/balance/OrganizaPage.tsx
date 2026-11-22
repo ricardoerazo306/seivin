@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { ChevronRight, Tags } from 'lucide-react'
-import { Button, Card, Chip, Notice } from '../../components/ui'
+import { Button, Card, Chip, Notice, PageHeader, Tabs } from '../../components/ui'
+import { ORGANIZA_TABS } from './tabs'
 import { money, signedMoney } from '../../lib/money'
 import { useBalances, useStartBalance } from './api'
 import { monthName, periodOf, periodSlug, periodTitle } from './logic'
@@ -26,10 +27,8 @@ export function OrganizaPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <h1 className="font-display text-3xl font-extrabold">Organiza</h1>
-        <p className="mt-1 max-w-prose text-ink-2">Tu balance mes a mes: lo que entró, lo que salió y lo que te quedó.</p>
-      </header>
+      <PageHeader title="Organiza" text="Tu balance mes a mes: lo que entró, lo que salió y lo que te quedó." />
+      <Tabs items={ORGANIZA_TABS} />
 
       {error && <Notice tone="warn">{error}</Notice>}
 
@@ -107,7 +106,7 @@ export function OrganizaPage() {
       </Card>
 
       <Link to="/app/organiza/categorias" className="flex items-center gap-3 rounded-3xl border border-line bg-surface p-5">
-        <Tags size={22} aria-hidden="true" className="text-verde-profundo" />
+        <Tags size={22} aria-hidden="true" className="text-action" />
         <span className="flex-1">
           <span className="block font-semibold">Categorías</span>
           <span className="block text-sm text-ink-2">Crea las tuyas, marca cuáles son esenciales y archiva las que no uses.</span>

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { Download, LogOut, Trash2 } from 'lucide-react'
 import { Button, Card, Field, Notice } from '../components/ui'
-import { requireClient, useAuth } from '../lib/auth'
+import { requireClient, signOutAll, useAuth } from '../lib/auth'
 import { authErrorMessage, validateName } from '../lib/authMessages'
 import { applyTheme, useProfile, useUpdateProfile } from '../lib/profile'
 import { EXPORT_TABLES, type ExperienceMode, type Theme } from '../lib/types'
@@ -85,7 +85,7 @@ export function Cuenta() {
   }
 
   const signOut = async () => {
-    await requireClient().auth.signOut()
+    await signOutAll()
     navigate('/', { replace: true })
   }
 
@@ -98,7 +98,8 @@ export function Cuenta() {
       setDeleting(false)
       return setDeleteError(authErrorMessage(error))
     }
-    await client.auth.signOut({ scope: 'local' })
+    if (auth.demo) await signOutAll()
+    else await client.auth.signOut({ scope: 'local' })
     navigate('/', { replace: true })
   }
 

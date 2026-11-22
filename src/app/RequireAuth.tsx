@@ -10,7 +10,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   if (auth.status === 'loading') {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-page" role="status" aria-label="Cargando">
-        <Loader2 className="animate-spin text-verde-profundo" size={28} aria-hidden="true" />
+        <Loader2 className="animate-spin text-action" size={28} aria-hidden="true" />
       </div>
     )
   }

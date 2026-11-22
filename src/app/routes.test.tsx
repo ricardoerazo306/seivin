@@ -22,7 +22,8 @@ describe('rutas', () => {
     expect(screen.getByRole('heading', { level: 1, name: BRAND.slogan })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Crear cuenta gratis' })).toHaveAttribute('href', '/registro')
     expect(screen.getByRole('link', { name: 'Ya tengo cuenta' })).toHaveAttribute('href', '/entrar')
-    expect(screen.getByText(BRAND.disclaimer)).toBeInTheDocument()
+    expect(screen.getByText(BRAND.disclaimer, { exact: false })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Privacidad' })).toHaveAttribute('href', '/privacidad')
   })
 
   it('no deja entrar a la app sin configuración ni sesión', async () => {

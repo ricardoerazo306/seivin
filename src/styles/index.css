@@ -28,6 +28,10 @@
   --ink-3: #4e6068;
   --action: var(--verde-profundo);
   --action-ink: #ffffff;
+  /* Gráficas: validadas (daltonismo, croma y contraste) con el validador de dataviz */
+  --dv-1: #13855a;
+  --dv-2: #c4811a;
+  --menta-ink: #1e3d33;
 }
 
 [data-theme='dark'] {
@@ -41,6 +45,12 @@
   --ink-3: #a9bbb5;
   --action: var(--menta);
   --action-ink: var(--petroleo);
+  --dv-1: #2f9d6e;
+  --dv-2: #c2821c;
+  --menta-suave: #1d4a3b;
+  --menta-ink: #ddf0e6;
+  --amarillo-fondo: #4a3a17;
+  --amarillo-texto: #f6e7c8;
 }
 
 @theme inline {
@@ -64,6 +74,7 @@
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
   --color-action: var(--action);
+  --color-menta-ink: var(--menta-ink);
   --color-action-ink: var(--action-ink);
 }
 

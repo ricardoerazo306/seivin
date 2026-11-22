@@ -38,7 +38,7 @@ export function Entrar() {
       footer={
         <>
           ¿Aún no tienes cuenta?{' '}
-          <Link to="/registro" className="font-semibold text-verde-profundo">
+          <Link to="/registro" className="font-semibold text-action">
             Créala gratis
           </Link>
         </>
@@ -52,7 +52,7 @@ export function Entrar() {
         <Button type="submit" loading={loading}>
           Entrar
         </Button>
-        <Link to="/recuperar" className="text-center text-sm font-semibold text-verde-profundo">
+        <Link to="/recuperar" className="text-center text-sm font-semibold text-action">
           Olvidé mi contraseña
         </Link>
       </form>

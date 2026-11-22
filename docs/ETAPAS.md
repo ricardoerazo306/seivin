@@ -5,14 +5,14 @@
 | 0. Prototipo navegable | Completa | 22 nov 2026 |
 | 1. Configuración | Completa | 22 nov 2026 |
 | 2. Base de datos y seguridad | Completa | 22 nov 2026 |
-| 3. Cuentas | Código completo · falta configurar Auth en Supabase | 22 nov 2026 |
+| 3. Cuentas | Completa · URLs configuradas; falta correo propio y Google | 22 nov 2026 |
 | 4. Balance mensual y categorías | Completa | 22 nov 2026 |
-| 5. Inicio y primer ingreso | Pendiente | |
-| 6. Metas de ahorro | Pendiente | |
-| 7. Fondo de emergencia | Pendiente | |
-| 8. Salidas y presupuestos | Pendiente | |
-| 9. Estadísticas y reportes | Pendiente | |
-| 10. Aprende, privacidad y lanzamiento | Pendiente | |
+| 5. Inicio y primer ingreso | Completa | 22 nov 2026 |
+| 6. Metas de ahorro | Completa | 22 nov 2026 |
+| 7. Fondo de emergencia | Completa | 22 nov 2026 |
+| 8. Salidas y presupuestos | Completa | 22 nov 2026 |
+| 9. Estadísticas y reportes | Completa | 22 nov 2026 |
+| 10. Aprende, privacidad y lanzamiento | Completa · falta prueba con cuenta real | 22 nov 2026 |
 
 ## Etapa 1 · Configuración
 
@@ -109,3 +109,40 @@ y agregar `https://seivin.pages.dev/**` a las Redirect URLs; decidir la confirma
 - Recorrido completo en navegador (celular y computador) con Supabase simulado (`qa/`): sin errores de consola.
 
 **Pendiente para después**: pantalla para administrar movimientos fijos (la base ya los soporta).
+
+## Etapa 5 · Inicio, primer ingreso y comentarios
+
+- **Modo exploración** (`/explorar`): la app completa con datos de ejemplo, sin cuenta. Imita la API de Supabase
+  dentro del navegador (`src/demo/`); nada sale del navegador y se borra al cerrar la pestaña.
+- **Primer ingreso guiado** (`/app/bienvenida`): nombre, prioridad, tipo de ingreso, personas a cargo y modo de experiencia.
+- **Inicio**: lo que quedó el último mes y su diferencia, un "próximo paso" según tu situación, tendencia de los
+  últimos meses, avance de metas y respaldo, cápsula sugerida y acceso al simulador.
+- **Comentarios** desde cualquier pantalla (tabla `feedback`; se leen en el editor de tablas de Supabase).
+
+## Etapas 6 y 7 · Metas y respaldo para imprevistos
+
+- Metas con monto, porqué, fecha o fecha flexible, prioridad y aporte mensual; vista previa del plan al crearla.
+- Detalle: cuánto apartar al mes para llegar, fecha estimada con el aporte planeado, aviso sin culpa si no alcanza,
+  aportes y retiros, marcar cumplida, archivar, borrar.
+- Respaldo: gasto esencial promedio de los últimos 3 balances (o el que escribas), meses sugeridos según ingreso,
+  personas a cargo y deudas, meta, meses cubiertos, tiempo para llegar, movimientos (el retiro pide motivo).
+
+## Etapa 8 · Salidas y presupuestos
+
+- Simulador: costo por salida, al mes y al año; escenarios de salir menos o gastar menos; efecto en tu primera meta.
+- Presupuestos por categoría comparados con el balance del mes (o el más reciente), con propuesta de un 10 % menos.
+
+## Etapa 9 · Estadísticas y reportes
+
+- Período de 3, 6 o 12 meses; promedios; ingresos y gastos por mes; lo que quedó; gastos por categoría de un mes.
+- Gráficas propias en SVG (sin librerías), con tooltip, leyenda, tabla accesible y paleta validada para daltonismo.
+- Descarga en PNG (`html-to-image`) y PDF (`jsPDF` 4.2.1, sin vulnerabilidades conocidas), cargados solo al usarlos.
+
+## Etapa 10 · Aprende, privacidad y lanzamiento
+
+- 10 cápsulas de 2–3 minutos con acción sugerida y marca de leída; glosario con 16 términos y buscador.
+- Páginas públicas de privacidad (Ley 1581 de 2012) y términos, enlazadas desde el registro y la bienvenida.
+- Modo oscuro revisado en todas las pantallas.
+
+**Pruebas (etapas 5–10)**: 35 pruebas automáticas + 2 del modo exploración; recorrido completo en navegador
+(computador claro, celular claro y oscuro) sin errores de consola ni peticiones a Supabase en modo exploración.

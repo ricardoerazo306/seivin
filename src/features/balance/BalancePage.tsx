@@ -75,7 +75,7 @@ function Loading() {
 
 function Back() {
   return (
-    <Link to="/app/organiza" className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-verde-profundo">
+    <Link to="/app/organiza" className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-action">
       <ArrowLeft size={16} aria-hidden="true" /> Organiza
     </Link>
   )
@@ -282,7 +282,7 @@ function Changes({
           return (
             <li key={`${c.kind}-${c.categoryId}`} className="flex items-center gap-3 py-2.5">
               <span
-                className={`flex size-8 shrink-0 items-center justify-center rounded-full ${up ? 'bg-menta-suave text-verde-profundo' : 'bg-amarillo-fondo text-amarillo-texto'}`}
+                className={`flex size-8 shrink-0 items-center justify-center rounded-full ${up ? 'bg-menta-suave text-action' : 'bg-amarillo-fondo text-amarillo-texto'}`}
               >
                 <Icon size={16} aria-hidden="true" />
               </span>

@@ -38,7 +38,7 @@ export function Registro() {
     return (
       <AuthShell title="Revisa tu correo" subtitle={`Te enviamos un enlace a ${form.email.trim()} para confirmar tu cuenta.`}>
         <Notice>Abre el enlace desde este mismo dispositivo. Si no lo ves en unos minutos, revisa la carpeta de spam.</Notice>
-        <Link to="/entrar" className="text-center font-semibold text-verde-profundo">
+        <Link to="/entrar" className="text-center font-semibold text-action">
           Ya confirmé, quiero entrar
         </Link>
       </AuthShell>
@@ -52,7 +52,7 @@ export function Registro() {
       footer={
         <>
           ¿Ya tienes cuenta?{' '}
-          <Link to="/entrar" className="font-semibold text-verde-profundo">
+          <Link to="/entrar" className="font-semibold text-action">
             Entra aquí
           </Link>
         </>
@@ -76,8 +76,10 @@ export function Registro() {
           Crear cuenta
         </Button>
         <p className="text-xs leading-relaxed text-ink-3">
-          Al crear tu cuenta aceptas que guardemos tus datos para mostrarte tu información financiera. Puedes descargarlos o
-          eliminarlos cuando quieras desde tu cuenta.
+          Al crear tu cuenta aceptas los{' '}
+          <Link to="/terminos" className="font-semibold underline">términos de uso</Link> y la{' '}
+          <Link to="/privacidad" className="font-semibold underline">política de privacidad</Link>. Guardamos tus datos solo para mostrarte tu
+          información; puedes descargarlos o eliminarlos cuando quieras desde tu cuenta.
         </p>
       </form>
     </AuthShell>

@@ -1,16 +1,24 @@
-import { NavLink, Outlet } from 'react-router'
-import { Plus } from 'lucide-react'
+import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
+import { Compass, Plus } from 'lucide-react'
+import { Feedback } from '../components/Feedback'
+import { exitDemo } from '../demo/mode'
+import { useAuth } from '../lib/auth'
+import { useProfile } from '../lib/profile'
 import { AREAS } from '../app/navigation'
 import { Logo } from '../components/Logo'
 import { BRAND } from '../config/brand'
 import { useThemeFromProfile } from '../lib/profile'
 
-/**
- * Estructura de la app privada: menú lateral en computador y barra inferior en celular.
- * La protección por sesión llega en la etapa 3.
- */
+/** Estructura de la app privada: menú lateral en computador y barra inferior en celular. */
 export function AppLayout() {
   useThemeFromProfile()
+  const auth = useAuth()
+  const profile = useProfile()
+  const location = useLocation()
+  const demo = auth.status === 'signed-in' && !!auth.demo
+  if (profile.data && !profile.data.onboarding_completed && location.pathname !== '/app/bienvenida') {
+    return <Navigate to="/app/bienvenida" replace />
+  }
   const mobile = AREAS.filter((a) => ['inicio', 'organiza', 'construye'].includes(a.id))
   return (
     <div className="flex min-h-dvh flex-wrap bg-page">
@@ -39,11 +47,18 @@ export function AppLayout() {
             </NavLink>
           ))}
         </nav>
-        <p className="mt-auto px-2 text-xs leading-relaxed text-[#AFC0BA]">{BRAND.disclaimer}</p>
+        <div className="mt-auto flex flex-col gap-3">
+          <Feedback variant="sidebar" />
+          <p className="px-2 text-xs leading-relaxed text-[#AFC0BA]">{BRAND.disclaimer}</p>
+        </div>
       </aside>
 
       <main className="min-w-0 flex-[999_1_560px] px-5 pt-6 pb-28 sm:px-8 lg:px-12 lg:pt-10 lg:pb-12">
         <div className="mx-auto max-w-5xl">
+          {demo && <DemoBanner />}
+          <div className="-mt-2 mb-2 flex justify-end lg:hidden">
+            <Feedback variant="icon" />
+          </div>
           <Outlet />
         </div>
       </main>
@@ -65,6 +80,39 @@ export function AppLayout() {
         <MobileItem to={mobile[2]!.path} label={mobile[2]!.label} Icon={mobile[2]!.icon} />
         <MobileItem to="/app/mas" label="Más" Icon={MoreIcon} />
       </nav>
+    </div>
+  )
+}
+
+function DemoBanner() {
+  const navigate = useNavigate()
+  // Primero sale de la zona privada y luego apaga el modo, para no pasar por "Entrar".
+  const leave = (to: string) => {
+    navigate(to, { replace: true })
+    setTimeout(exitDemo, 0)
+  }
+  return (
+    <div className="mb-5 flex flex-wrap items-center gap-3 rounded-2xl bg-amarillo-fondo p-4 text-sm text-amarillo-texto">
+      <Compass size={20} aria-hidden="true" className="shrink-0" />
+      <p className="min-w-48 flex-1">
+        <strong>Estás explorando con datos de ejemplo.</strong> Puedes cambiar todo; nada sale de este navegador y se borra al cerrar la pestaña.
+      </p>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => leave('/registro')}
+          className="inline-flex h-10 items-center rounded-xl bg-verde-profundo px-4 font-semibold text-white"
+        >
+          Crear mi cuenta
+        </button>
+        <button
+          type="button"
+          onClick={() => leave('/')}
+          className="h-10 rounded-xl px-3 font-semibold hover:bg-white/40"
+        >
+          Salir
+        </button>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,46 @@
+import sys
+from playwright.sync_api import sync_playwright
+W=int(sys.argv[1]); tag=sys.argv[2]; theme=sys.argv[3] if len(sys.argv)>3 else 'light'
+errs=[]; shots=[]
+with sync_playwright() as p:
+    b=p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox"])
+    ctx=b.new_context(viewport={"width":W,"height":900},device_scale_factor=1,accept_downloads=True,color_scheme='dark' if theme=='dark' else 'light')
+    pg=ctx.new_page()
+    pg.on("pageerror",lambda e: errs.append("PAGEERROR "+str(e)))
+    pg.on("console",lambda m: errs.append(m.text) if m.type=="error" else None)
+    pg.on("request",lambda r: errs.append("RED: "+r.url) if "supabase.co" in r.url else None)
+    base="http://localhost:4174"
+    def shot(name):
+        pg.wait_for_timeout(700); f=f"qa/capturas/{tag}-{name}.png"; pg.screenshot(path=f,full_page=True); shots.append(f)
+    pg.goto(base+"/"); pg.get_by_role("link",name="Explorar sin cuenta, con datos de ejemplo").click()
+    pg.wait_for_selector("text=Tu próximo paso"); shot("01-inicio")
+    pg.goto(base+"/app/organiza"); pg.wait_for_selector("text=Tus balances")
+    pg.locator("button", has_text="Empezar").first.click()
+    pg.wait_for_selector("text=Lo que salió"); shot("02-balance")
+    pg.get_by_role("button",name="Cerrar el balance").click(); pg.wait_for_selector("text=Así cerró"); shot("03-cerrado")
+    pg.goto(base+"/app/organiza/presupuestos"); pg.wait_for_selector("text=Nuevo presupuesto"); shot("04-presupuestos")
+    pg.goto(base+"/app/organiza/salidas"); pg.wait_for_selector("text=¿Y si cambias un poco?")
+    pg.locator("#cheaper").fill("20"); pg.locator("#cheaper").dispatch_event("pointerup"); shot("05-salidas")
+    pg.goto(base+"/app/construye"); pg.wait_for_selector("text=Viaje a Cartagena"); shot("06-metas")
+    pg.get_by_role("button",name="Nueva meta").click(); f=pg.locator("form").first
+    pg.get_by_label("¿Qué quieres lograr?").fill("Moto"); pg.get_by_label("¿Cuánto necesitas?").fill("6000000"); pg.locator("#goal-date").fill("2027-12")
+    pg.get_by_label("¿Cuánto puedes apartar al mes? (opcional)").fill("400000"); pg.wait_for_timeout(300); shot("07-nueva-meta")
+    pg.get_by_role("button",name="Crear meta").click(); pg.wait_for_selector("text=Moto")
+    pg.locator("a", has_text="Viaje a Cartagena").first.click(); pg.wait_for_selector("text=Registrar un movimiento")
+    pg.get_by_label("Valor").fill("100000"); pg.get_by_role("button",name="Registrar aporte").click(); pg.wait_for_timeout(500); shot("08-meta")
+    pg.goto(base+"/app/construye/respaldo"); pg.wait_for_selector("text=Tienes guardado"); shot("09-respaldo")
+    pg.goto(base+"/app/entiende"); pg.wait_for_selector("text=En qué se fue la plata"); shot("10-entiende")
+    with pg.expect_download() as d: pg.get_by_role("button",name="PNG").click()
+    print("PNG:", d.value.suggested_filename)
+    with pg.expect_download() as d: pg.get_by_role("button",name="PDF").click()
+    print("PDF:", d.value.suggested_filename); d.value.save_as(f"qa/capturas/{tag}-reporte.pdf")
+    pg.goto(base+"/app/aprende"); pg.wait_for_selector("text=Glosario"); shot("11-aprende")
+    pg.goto(base+"/app/aprende/respaldo"); pg.get_by_role("button",name="Marcar como leída").click(); pg.wait_for_selector("text=Leída"); shot("12-capsula")
+    pg.goto(base+"/app/cuenta"); pg.wait_for_selector("text=Tu cuenta"); shot("13-cuenta")
+    btn = pg.get_by_role("button",name="Comentarios") if W>=1024 else pg.get_by_role("button",name="Enviar comentarios")
+    btn.click(); pg.wait_for_selector("text=Cuéntanos qué piensas"); shot("14-comentarios")
+    pg.keyboard.press("Escape"); pg.goto(base+"/privacidad"); pg.wait_for_selector("text=Ley 1581"); shot("15-privacidad")
+    pg.goto(base+"/app"); pg.get_by_role("button",name="Salir").click(); pg.wait_for_url(base+"/"); print("salió ->", pg.url)
+    pg.goto(base+"/app"); pg.wait_for_timeout(1500); print("sin sesión /app ->", pg.url)
+    b.close()
+print("ERRORES:", errs or "ninguno")

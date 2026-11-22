@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router'
-import { Archive, ArchiveRestore, ArrowLeft, Trash2 } from 'lucide-react'
-import { Button, Card, Field, Notice } from '../../components/ui'
+import { Archive, ArchiveRestore, Trash2 } from 'lucide-react'
+import { Button, Card, Field, Notice, PageHeader, Tabs } from '../../components/ui'
+import { ORGANIZA_TABS } from './tabs'
 import type { Category, Kind } from '../../lib/types'
 import { useCategories, useCategoryMutations } from './api'
 
@@ -18,15 +18,11 @@ export function CategoriasPage() {
   const list = categories.data ?? []
   return (
     <div className="flex flex-col gap-6">
-      <Link to="/app/organiza" className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-verde-profundo">
-        <ArrowLeft size={16} aria-hidden="true" /> Organiza
-      </Link>
-      <header>
-        <h1 className="font-display text-3xl font-extrabold">Categorías</h1>
-        <p className="mt-1 max-w-prose text-ink-2">
-          Las esenciales son las que necesitas para vivir: vivienda, comida, transporte. Las usamos para calcular tu respaldo para imprevistos.
-        </p>
-      </header>
+      <PageHeader title="Organiza" text="Tu balance mes a mes: lo que entró, lo que salió y lo que te quedó." />
+      <Tabs items={ORGANIZA_TABS} />
+      <p className="max-w-prose text-ink-2">
+        Las categorías esenciales son las que necesitas para vivir: vivienda, comida, transporte. Las usamos para calcular tu respaldo para imprevistos.
+      </p>
       {error && <Notice tone="warn">{error}</Notice>}
       {categories.isError && <Notice tone="warn">No pudimos cargar tus categorías. Recarga la página.</Notice>}
       <Group kind="ingreso" title="De dónde entra" list={list} onError={setError} />

@@ -19,7 +19,7 @@ export function NuevaContrasena() {
   if (auth.status !== 'signed-in') {
     return (
       <AuthShell title="El enlace no es válido" subtitle="Puede que haya vencido o ya se haya usado.">
-        <Link to="/recuperar" className="text-center font-semibold text-verde-profundo">
+        <Link to="/recuperar" className="text-center font-semibold text-action">
           Pedir un enlace nuevo
         </Link>
       </AuthShell>

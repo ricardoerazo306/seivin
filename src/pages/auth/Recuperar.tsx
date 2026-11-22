@@ -42,7 +42,7 @@ export function Recuperar() {
           </Button>
         </form>
       )}
-      <Link to="/entrar" className="text-center text-sm font-semibold text-verde-profundo">
+      <Link to="/entrar" className="text-center text-sm font-semibold text-action">
         Volver a entrar
       </Link>
     </AuthShell>

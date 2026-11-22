@@ -10,7 +10,7 @@ export function AreaPage({ areaId }: { areaId: string }) {
       <h1 className="font-display text-3xl font-extrabold">{area.label}</h1>
       <p className="max-w-prose text-ink-2">{area.description}</p>
       <div className="flex items-start gap-3 rounded-2xl border border-dashed border-line-strong bg-surface p-5">
-        <area.icon size={22} aria-hidden="true" className="mt-0.5 shrink-0 text-verde-profundo" />
+        <area.icon size={22} aria-hidden="true" className="mt-0.5 shrink-0 text-action" />
         <p className="text-sm text-ink-2">
           Esta sección se construye en la <strong className="text-ink">etapa {area.stage}</strong> del plan.
         </p>
@@ -28,7 +28,7 @@ export function MorePage() {
         {rest.map((a) => (
           <li key={a.id}>
             <Link to={a.path} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-4 font-semibold">
-              <a.icon size={20} aria-hidden="true" className="text-verde-profundo" />
+              <a.icon size={20} aria-hidden="true" className="text-action" />
               {a.label}
             </Link>
           </li>
