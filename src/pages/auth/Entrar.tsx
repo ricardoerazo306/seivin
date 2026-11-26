@@ -4,6 +4,7 @@ import { Button, Field, Notice } from '../../components/ui'
 import { FEATURES } from '../../config/features'
 import { requireClient, useAuth } from '../../lib/auth'
 import { authErrorMessage, validateEmail } from '../../lib/authMessages'
+import { rememberMethod, takeAuthReturnError } from '../../lib/authReturn'
 import { AuthShell } from './AuthShell'
 import { GoogleButton } from './GoogleButton'
 
@@ -14,7 +15,7 @@ export function Entrar() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ email?: string | null; password?: string | null }>({})
-  const [serverError, setServerError] = useState<string | null>(null)
+  const [serverError, setServerError] = useState<string | null>(() => takeAuthReturnError())
   const [loading, setLoading] = useState(false)
 
   if (auth.status === 'signed-in') return <Navigate to={from} replace />
@@ -26,6 +27,7 @@ export function Entrar() {
     if (next.email || next.password) return
     setLoading(true)
     setServerError(null)
+    rememberMethod('correo')
     const { error } = await requireClient().auth.signInWithPassword({ email: email.trim(), password })
     setLoading(false)
     if (error) setServerError(authErrorMessage(error))
@@ -44,7 +46,7 @@ export function Entrar() {
         </>
       }
     >
-      {FEATURES.googleSignIn && <GoogleButton />}
+      {FEATURES.googleSignIn && <GoogleButton next={from} />}
       <form noValidate onSubmit={submit} className="flex flex-col gap-4">
         <Field label="Correo" type="email" autoComplete="email" inputMode="email" value={email} error={errors.email} onChange={(e) => setEmail(e.target.value)} />
         <Field label="Contraseña" type="password" autoComplete="current-password" value={password} error={errors.password} onChange={(e) => setPassword(e.target.value)} />

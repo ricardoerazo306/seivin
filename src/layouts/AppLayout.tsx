@@ -8,10 +8,13 @@ import { AREAS } from '../app/navigation'
 import { Logo } from '../components/Logo'
 import { BRAND } from '../config/brand'
 import { useThemeFromProfile } from '../lib/profile'
+import { useEffect } from 'react'
+import { prefetch, prefetchWhenIdle } from '../app/prefetch'
 
 /** Estructura de la app privada: menú lateral en computador y barra inferior en celular. */
 export function AppLayout() {
   useThemeFromProfile()
+  useEffect(() => prefetchWhenIdle(), [])
   const auth = useAuth()
   const profile = useProfile()
   const location = useLocation()
@@ -31,6 +34,9 @@ export function AppLayout() {
             <NavLink
               key={a.id}
               to={a.path}
+              viewTransition
+              onMouseEnter={() => prefetch(a.path)}
+              onFocus={() => prefetch(a.path)}
               end={a.path === '/app'}
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors ${
@@ -87,9 +93,9 @@ export function AppLayout() {
 function DemoBanner() {
   const navigate = useNavigate()
   // Primero sale de la zona privada y luego apaga el modo, para no pasar por "Entrar".
-  const leave = (to: string) => {
-    navigate(to, { replace: true })
-    setTimeout(exitDemo, 0)
+  const leave = async (to: string) => {
+    await navigate(to, { replace: true })
+    exitDemo()
   }
   return (
     <div className="mb-5 flex flex-wrap items-center gap-3 rounded-2xl bg-amarillo-fondo p-4 text-sm text-amarillo-texto">
@@ -100,14 +106,14 @@ function DemoBanner() {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => leave('/registro')}
+          onClick={() => void leave('/registro')}
           className="inline-flex h-10 items-center rounded-xl bg-verde-profundo px-4 font-semibold text-white"
         >
           Crear mi cuenta
         </button>
         <button
           type="button"
-          onClick={() => leave('/')}
+          onClick={() => void leave('/')}
           className="h-10 rounded-xl px-3 font-semibold hover:bg-white/40"
         >
           Salir
@@ -139,6 +145,9 @@ function MobileItem({
   return (
     <NavLink
       to={to}
+      viewTransition
+      onMouseEnter={() => prefetch(to)}
+      onFocus={() => prefetch(to)}
       end={end}
       className={({ isActive }) =>
         `flex min-h-11 flex-col items-center justify-center gap-1 text-[11px] ${isActive ? 'font-bold text-ink' : 'font-medium text-ink-3'}`

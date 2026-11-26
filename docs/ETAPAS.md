@@ -156,3 +156,35 @@ y agregar `https://seivin.pages.dev/**` a las Redirect URLs; decidir la confirma
   activado en Supabase. Solo usa permisos básicos (correo y nombre), que no requieren verificación.
 - **Correo**: SMTP de Gmail (`smtp.gmail.com:465`, remitente "Seivin") con contraseña de aplicación. Gratis, hasta
   unos 500 correos al día. La contraseña la pega el dueño de la cuenta.
+
+## Versión 1.0 · Lista para recibir usuarios (26 nov 2026)
+
+**Entrada a la cuenta**
+- Google como opción principal en registro y entrada, con estado "Abriendo Google…" y regreso a la página pedida.
+- Si Google o un enlace del correo devuelven un error, se muestra un mensaje claro en vez de una dirección con códigos.
+- Botón para mostrar u ocultar la contraseña y aviso de la última forma de entrada usada.
+
+**Robustez y fluidez**
+- Pantalla de error amable en lugar de la página técnica del navegador.
+- Si una pantalla no carga porque se publicó una versión nueva, la app se recarga sola una vez.
+- Precarga de las áreas principales cuando el navegador está libre o al pasar el cursor por el menú.
+- Transiciones suaves entre pantallas, barra de progreso al navegar, scroll al inicio en cada página.
+- Avisos breves al guardar (meta creada, balance cerrado, presupuesto creado…) y aviso cuando no hay conexión.
+
+**Portada**
+- Página completa: propuesta de valor, vista previa del producto, cómo funciona, áreas, privacidad,
+  preguntas frecuentes y pie con enlaces legales.
+
+**Lanzamiento**
+- Vista previa al compartir el enlace (imagen 1200×630, título y descripción), `robots.txt` y `sitemap.xml`.
+- App instalable en el celular (manifiesto e íconos, incluido el ícono adaptable de Android).
+- Caché larga para los archivos con huella (`/assets/*`).
+- Latido diario (`.github/workflows/latido.yml` + función `public.ping()`): evita que Supabase pause el
+  proyecto gratuito por inactividad. Corre gratis en GitHub Actions porque el repositorio es público.
+- Plantillas de correo en español con la marca en `supabase/templates/` (se pegan una vez en el panel).
+
+**Costo**: cero. Supabase Free, Cloudflare Workers Free, Google Cloud sin facturación, Gmail SMTP y
+GitHub Actions en repositorio público.
+
+**Límites del plan gratuito a vigilar**: 50.000 usuarios activos al mes y 500 MB de base de datos en
+Supabase; unos 500 correos al día con Gmail.

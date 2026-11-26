@@ -1,29 +1,46 @@
-import { useId, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
-import { AlertCircle, CheckCircle2, Info, Loader2 } from 'lucide-react'
+import { useId, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
+import { AlertCircle, CheckCircle2, Eye, EyeOff, Info, Loader2 } from 'lucide-react'
 import { NavLink } from 'react-router'
 
 export function Field({
   label,
   hint,
   error,
+  type,
   ...rest
 }: { label: string; hint?: string; error?: string | null } & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId()
+  const [visible, setVisible] = useState(false)
+  const isPassword = type === 'password'
   const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="text-sm font-semibold text-ink">
         {label}
       </label>
-      <input
-        id={id}
-        aria-invalid={!!error}
-        aria-describedby={describedBy}
-        className={`h-12 rounded-xl border bg-surface px-3.5 text-base text-ink outline-none transition-colors focus:border-verde-profundo focus:ring-2 focus:ring-verde-profundo/20 ${
-          error ? 'border-amarillo-suave' : 'border-line-strong'
-        }`}
-        {...rest}
-      />
+      <div className="relative">
+        <input
+          id={id}
+          type={isPassword && visible ? 'text' : type}
+          aria-invalid={!!error}
+          aria-describedby={describedBy}
+          className={`h-12 w-full rounded-xl border bg-surface px-3.5 text-base text-ink outline-none transition-colors focus:border-verde-profundo focus:ring-2 focus:ring-verde-profundo/20 ${
+            error ? 'border-amarillo-suave' : 'border-line-strong'
+          } ${isPassword ? 'pr-24' : ''}`}
+          {...rest}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setVisible((v) => !v)}
+            aria-pressed={visible}
+            className="absolute top-1/2 right-1.5 flex h-9 -translate-y-1/2 items-center gap-1.5 rounded-lg px-2.5 text-sm font-semibold text-ink-2 hover:bg-page"
+          >
+            {visible ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
+            {visible ? 'Ocultar' : 'Mostrar'}
+          </button>
+        )}
+      </div>
       {error ? (
         <p id={`${id}-error`} role="alert" className="text-sm font-medium text-amarillo-texto">
           {error}

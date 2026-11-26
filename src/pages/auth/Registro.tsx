@@ -4,6 +4,7 @@ import { Button, Field, Notice } from '../../components/ui'
 import { FEATURES } from '../../config/features'
 import { requireClient, useAuth } from '../../lib/auth'
 import { authErrorMessage, validateEmail, validateName, validatePassword } from '../../lib/authMessages'
+import { rememberMethod, takeAuthReturnError } from '../../lib/authReturn'
 import { AuthShell } from './AuthShell'
 import { GoogleButton } from './GoogleButton'
 
@@ -11,7 +12,7 @@ export function Registro() {
   const auth = useAuth()
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const [errors, setErrors] = useState<Record<string, string | null>>({})
-  const [serverError, setServerError] = useState<string | null>(null)
+  const [serverError, setServerError] = useState<string | null>(() => takeAuthReturnError())
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -24,6 +25,7 @@ export function Registro() {
     if (Object.values(next).some(Boolean)) return
     setLoading(true)
     setServerError(null)
+    rememberMethod('correo')
     const { data, error } = await requireClient().auth.signUp({
       email: form.email.trim(),
       password: form.password,
@@ -48,7 +50,7 @@ export function Registro() {
   return (
     <AuthShell
       title="Crea tu cuenta"
-      subtitle="Tus datos son solo tuyos: nadie más puede verlos."
+      subtitle="Gratis y en un minuto. Tus datos son solo tuyos: nadie más puede verlos."
       footer={
         <>
           ¿Ya tienes cuenta?{' '}
@@ -58,7 +60,7 @@ export function Registro() {
         </>
       }
     >
-      {FEATURES.googleSignIn && <GoogleButton />}
+      {FEATURES.googleSignIn && <GoogleButton label="Crear cuenta con Google" />}
       <form noValidate onSubmit={submit} className="flex flex-col gap-4">
         <Field label="¿Cómo te llamamos?" autoComplete="given-name" value={form.name} error={errors.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
         <Field label="Correo" type="email" autoComplete="email" inputMode="email" value={form.email} error={errors.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />

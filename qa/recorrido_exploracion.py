@@ -12,7 +12,7 @@ with sync_playwright() as p:
     base="http://localhost:4174"
     def shot(name):
         pg.wait_for_timeout(700); f=f"qa/capturas/{tag}-{name}.png"; pg.screenshot(path=f,full_page=True); shots.append(f)
-    pg.goto(base+"/"); pg.get_by_role("link",name="Explorar sin cuenta, con datos de ejemplo").click()
+    pg.goto(base+"/"); pg.get_by_role("link",name="Explorar con datos de ejemplo").click()
     pg.wait_for_selector("text=Tu próximo paso"); shot("01-inicio")
     pg.goto(base+"/app/organiza"); pg.wait_for_selector("text=Tus balances")
     pg.locator("button", has_text="Empezar").first.click()

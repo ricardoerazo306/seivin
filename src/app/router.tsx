@@ -1,6 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import { AppLayout } from '../layouts/AppLayout'
 import { RequireAuth } from './RequireAuth'
+import { Root, RouteError } from './Root'
 import { Entrar } from '../pages/auth/Entrar'
 import { NuevaContrasena } from '../pages/auth/NuevaContrasena'
 import { Recuperar } from '../pages/auth/Recuperar'
@@ -10,6 +11,11 @@ import { Landing } from '../pages/Landing'
 import { NotFound } from '../pages/NotFound'
 
 export const routes: RouteObject[] = [
+  {
+    element: <Root />,
+    errorElement: <RouteError />,
+    hydrateFallbackElement: <div className="min-h-dvh bg-page" />,
+    children: [
   { path: '/', element: <Landing /> },
   // Carga diferida: el cliente de Supabase solo se descarga cuando hace falta.
   { path: '/estado', lazy: () => import('../pages/Estado').then((m) => ({ Component: m.Estado })) },
@@ -49,6 +55,8 @@ export const routes: RouteObject[] = [
   { path: '/recuperar', element: <Recuperar /> },
   { path: '/nueva-contrasena', element: <NuevaContrasena /> },
   { path: '*', element: <NotFound /> },
+    ],
+  },
 ]
 
 export const router = createBrowserRouter(routes)

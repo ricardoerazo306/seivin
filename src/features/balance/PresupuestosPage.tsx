@@ -8,6 +8,7 @@ import { useBalances, useCategories, useLines } from './api'
 import { monthName, periodOf } from './logic'
 import { activeBudgets, budgetStatus } from './salidas'
 import { ORGANIZA_TABS } from './tabs'
+import { toast } from '../../lib/toast'
 
 type Budget = { id: string; category_id: string; amount: number; month_from: string; month_to: string | null }
 
@@ -70,7 +71,7 @@ export function PresupuestosPage() {
             )
           })}
         </ul>
-        {free.length > 0 && <NewBudget categories={free} spentBy={spentBy} period={ref?.period ?? current} onCreate={(row, done) => m.insert.mutate(row, { onSuccess: done, onError: () => setError('No pudimos crear el presupuesto.') })} loading={m.insert.isPending} />}
+        {free.length > 0 && <NewBudget categories={free} spentBy={spentBy} period={ref?.period ?? current} onCreate={(row, done) => m.insert.mutate(row, { onSuccess: () => (done(), toast('Presupuesto creado')), onError: () => setError('No pudimos crear el presupuesto.') })} loading={m.insert.isPending} />}
       </Card>
     </div>
   )

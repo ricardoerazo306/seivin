@@ -20,9 +20,12 @@ describe('rutas', () => {
   it('muestra la bienvenida con el eslogan, el registro y el aviso de que no es un banco', () => {
     renderRoutes('/')
     expect(screen.getByRole('heading', { level: 1, name: BRAND.slogan })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Crear cuenta gratis' })).toHaveAttribute('href', '/registro')
-    expect(screen.getByRole('link', { name: 'Ya tengo cuenta' })).toHaveAttribute('href', '/entrar')
-    expect(screen.getByText(BRAND.disclaimer, { exact: false })).toBeInTheDocument()
+    const crear = screen.getAllByRole('link', { name: 'Crear cuenta gratis' })
+    expect(crear.length).toBeGreaterThan(0)
+    crear.forEach((l) => expect(l).toHaveAttribute('href', '/registro'))
+    expect(screen.getAllByRole('link', { name: 'Entrar' })[0]).toHaveAttribute('href', '/entrar')
+    expect(screen.getByRole('link', { name: 'Explorar con datos de ejemplo' })).toHaveAttribute('href', '/explorar')
+    expect(screen.getByText(BRAND.disclaimer)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Privacidad' })).toHaveAttribute('href', '/privacidad')
   })
 
@@ -50,5 +53,27 @@ describe('rutas', () => {
   it('muestra una página clara para rutas inexistentes', () => {
     renderRoutes('/no-existe')
     expect(screen.getByRole('heading', { name: 'Esta página no existe' })).toBeInTheDocument()
+  })
+})
+
+describe('errores y retorno de Google', () => {
+  it('convierte el error que trae Google en un mensaje claro y limpia la dirección', async () => {
+    const { captureAuthReturnError, takeAuthReturnError } = await import('../lib/authReturn')
+    window.history.replaceState(null, '', '/entrar#error=access_denied&error_description=access_denied')
+    captureAuthReturnError()
+    expect(window.location.hash).toBe('')
+    expect(takeAuthReturnError()).toMatch(/Cancelaste el inicio con Google/)
+    expect(takeAuthReturnError()).toBeNull()
+  })
+
+  it('muestra una pantalla amable si una página falla', async () => {
+    const { Root, RouteError } = await import('./Root')
+    const Boom = () => {
+      throw new Error('fallo de prueba')
+    }
+    const router = createMemoryRouter([{ element: <Root />, errorElement: <RouteError />, children: [{ path: '/', element: <Boom /> }] }])
+    render(<RouterProvider router={router} />)
+    expect(await screen.findByRole('heading', { name: 'Algo no salió bien' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Recargar' })).toBeInTheDocument()
   })
 })

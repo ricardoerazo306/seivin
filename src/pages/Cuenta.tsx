@@ -6,6 +6,7 @@ import { requireClient, signOutAll, useAuth } from '../lib/auth'
 import { authErrorMessage, validateName } from '../lib/authMessages'
 import { applyTheme, useProfile, useUpdateProfile } from '../lib/profile'
 import { EXPORT_TABLES, type ExperienceMode, type Theme } from '../lib/types'
+import { toast } from '../lib/toast'
 
 const MODES: { id: ExperienceMode; label: string; text: string }[] = [
   { id: 'inicial', label: 'Inicial', text: 'Paso a paso, con explicaciones.' },
@@ -48,13 +49,14 @@ export function Cuenta() {
     setNameError(err)
     if (err) return
     await update.mutateAsync({ display_name: name.trim() })
+    toast('Nombre guardado')
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
 
   const setTheme = (theme: Theme) => {
     applyTheme(theme)
-    update.mutate({ theme })
+    update.mutate({ theme }, { onSuccess: () => toast('Apariencia guardada') })
   }
 
   const exportData = async () => {
@@ -77,6 +79,7 @@ export function Cuenta() {
       a.download = `seivin-mis-datos-${new Date().toISOString().slice(0, 10)}.json`
       a.click()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
+      toast('Archivo descargado')
     } catch {
       setExportError('No pudimos preparar el archivo. Revisa tu conexión e intenta de nuevo.')
     } finally {
@@ -151,7 +154,7 @@ export function Cuenta() {
                 type="button"
                 role="radio"
                 aria-checked={on}
-                onClick={() => update.mutate({ experience_mode: m.id })}
+                onClick={() => update.mutate({ experience_mode: m.id }, { onSuccess: () => toast(`Modo ${m.label.toLowerCase()} activado`) })}
                 className={`rounded-2xl p-4 text-left transition ${on ? 'border-2 border-verde-profundo bg-menta-suave' : 'border border-line-strong bg-surface hover:bg-page'}`}
               >
                 <span className="block font-bold">{m.label}</span>

@@ -16,6 +16,7 @@ import {
   useStartBalance,
 } from './api'
 import { closingMessage, compareByCategory, monthName, periodFromSlug, periodLabel, previousAmountFor, totals } from './logic'
+import { toast } from '../../lib/toast'
 
 const EXPENSE_TYPES = [
   { id: 'fijo', label: 'Fijo' },
@@ -136,7 +137,7 @@ function Editor({ period, balanceId, closed, lines, linesLoading, prevLines, pre
   const setClosed = (value: boolean) =>
     status.mutate(
       { id: balanceId, closed: value },
-      { onError: () => setError('No pudimos guardar el cambio. Intenta de nuevo.') },
+      { onSuccess: () => toast(value ? 'Balance cerrado' : 'Balance reabierto'), onError: () => setError('No pudimos guardar el cambio. Intenta de nuevo.') },
     )
 
   return (
@@ -531,6 +532,7 @@ function NewLine({
         onSuccess: () => {
           setName('')
           setAmount(0)
+          toast('Agregado')
         },
         onError: () => setErrors({ form: 'No pudimos agregarlo. Revisa tu conexión.' }),
       },

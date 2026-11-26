@@ -6,6 +6,7 @@ import { money } from '../../lib/money'
 import { useGoalMovements, useGoalMutations, useGoals, type Goal } from './api'
 import { goalPlan, monthYear, monthsText } from './logic'
 import { CONSTRUYE_TABS } from './tabs'
+import { toast } from '../../lib/toast'
 
 
 export function MetasPage() {
@@ -132,7 +133,7 @@ export function GoalForm({ goal, onDone }: { goal?: Goal; onDone: () => void }) 
       planned_monthly: monthly || null,
       priority,
     }
-    const opts = { onSuccess: onDone, onError: () => setErrors({ form: 'No pudimos guardar la meta. Revisa tu conexión.' }) }
+    const opts = { onSuccess: () => (toast(goal ? 'Cambios guardados' : 'Meta creada'), onDone()), onError: () => setErrors({ form: 'No pudimos guardar la meta. Revisa tu conexión.' }) }
     if (goal) m.update.mutate({ id: goal.id, ...row }, opts)
     else m.insert.mutate(row, opts)
   }

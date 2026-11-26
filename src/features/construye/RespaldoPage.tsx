@@ -8,6 +8,7 @@ import { useFund, useFundMovementMutations, useFundMovements, useFundMutations, 
 import { essentialAverage, fundPlan, monthsText, savedFrom, suggestedMonths } from './logic'
 import { CONSTRUYE_TABS } from './tabs'
 import { MovementForm, MovementList } from './Movements'
+import { toast } from '../../lib/toast'
 
 export function RespaldoPage() {
   const fund = useFund()
@@ -88,7 +89,7 @@ export function RespaldoPage() {
                 max={saved}
                 loading={mm.insert.isPending}
                 onSubmit={(m, reset, fail) =>
-                  mm.insert.mutate({ kind: m.kind, amount: m.amount, movement_date: m.movement_date, reason: m.reason ?? null, note: m.note }, { onSuccess: reset, onError: fail })
+                  mm.insert.mutate({ kind: m.kind, amount: m.amount, movement_date: m.movement_date, reason: m.reason ?? null, note: m.note }, { onSuccess: () => (reset(), toast(m.kind === 'aporte' ? 'Aporte registrado' : 'Retiro registrado')), onError: fail })
                 }
               />
             </div>

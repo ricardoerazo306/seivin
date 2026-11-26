@@ -4,6 +4,7 @@ import { Button, Card, Field, Notice, PageHeader, Tabs } from '../../components/
 import { ORGANIZA_TABS } from './tabs'
 import type { Category, Kind } from '../../lib/types'
 import { useCategories, useCategoryMutations } from './api'
+import { toast } from '../../lib/toast'
 
 function errorText(e: unknown): string {
   const code = (e as { code?: string } | null)?.code
@@ -50,6 +51,7 @@ function Group({ kind, title, list, onError }: { kind: Kind; title: string; list
       { name: v, kind, is_essential: kind === 'gasto' && essential },
       {
         onSuccess: () => {
+          toast('Categoría creada')
           setName('')
           setEssential(false)
           onError(null)

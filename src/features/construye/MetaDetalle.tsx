@@ -7,6 +7,7 @@ import { useGoalMovementMutations, useGoalMovements, useGoalMutations, useGoals 
 import { goalPlan, monthYear, monthsText } from './logic'
 import { GoalForm } from './MetasPage'
 import { MovementForm, MovementList } from './Movements'
+import { toast } from '../../lib/toast'
 
 export function MetaDetalle() {
   const { id } = useParams()
@@ -94,7 +95,7 @@ export function MetaDetalle() {
           <MovementForm
             loading={mm.insert.isPending}
             max={p.saved}
-            onSubmit={(m, reset, fail) => mm.insert.mutate({ goal_id: goal.id, kind: m.kind, amount: m.amount, movement_date: m.movement_date, note: m.note }, { onSuccess: reset, onError: fail })}
+            onSubmit={(m, reset, fail) => mm.insert.mutate({ goal_id: goal.id, kind: m.kind, amount: m.amount, movement_date: m.movement_date, note: m.note }, { onSuccess: () => (reset(), toast(m.kind === 'aporte' ? 'Aporte registrado' : 'Retiro registrado')), onError: fail })}
           />
         </div>
       </Card>
@@ -111,7 +112,7 @@ export function MetaDetalle() {
       <div className="flex flex-wrap gap-3">
         {goal.status === 'activa' ? (
           <>
-            <Button variant="ghost" onClick={() => gm.update.mutate({ id: goal.id, status: 'cumplida' })}>
+            <Button variant="ghost" onClick={() => gm.update.mutate({ id: goal.id, status: 'cumplida' }, { onSuccess: () => toast('¡Meta cumplida!') })}>
               <CheckCircle2 size={18} aria-hidden="true" /> Marcar como cumplida
             </Button>
             <Button variant="ghost" onClick={() => gm.update.mutate({ id: goal.id, status: 'archivada' })}>
